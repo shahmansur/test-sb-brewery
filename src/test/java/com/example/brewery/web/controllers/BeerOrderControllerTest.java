@@ -14,8 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -54,13 +55,13 @@ class BeerOrderControllerTest {
         beerOrder = BeerOrderDto.builder()
                 .id(UUID.randomUUID())
                 .customerRef("1234")
-                .beerOrderLines(List.of(BeerOrderLineDto
+                .beerOrderLines(Stream.of(BeerOrderLineDto
                         .builder()
                         .beerId(validBeer.getId())
-                        .build()))
+                        .build()).collect(Collectors.toList()))
                 .build();
 
-        beerOrderPagedList = new BeerOrderPagedList(List.of(beerOrder),
+        beerOrderPagedList = new BeerOrderPagedList(Stream.of(beerOrder).collect(Collectors.toList()),
                 PageRequest.of(1, 1), 1L);
     }
 
